@@ -1,21 +1,35 @@
 import { useEffect, useState } from 'react';
-import { fetchTrendingMovies } from 'services/API';
+import { useSearchParams } from 'react-router-dom';
+import { fetchMovieSearch } from 'services/API';
 import { MovieGallery } from 'components/MovieGallery/MovieGallery';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
 
   useEffect(() => {
+    if (!query) return;
     const fetchData = async () => {
-      const res = await fetchTrendingMovies();
+      const res = await fetchMovieSearch(query);
       setMovies(res.results);
     };
-    fetchData();
-  }, []);
+    fetchData(query);
+  }, [query]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setSearchParams({ query: form.elements.input.value });
+    form.reset();
+  };
 
   return (
     <>
-      <h1>Trending today</h1>
+      <form onSubmit={handleSubmit}>
+        <input type="text" autoComplete="off" name="input" autoFocus />
+        <button type="submit">Search</button>
+      </form>
       <div>
         <MovieGallery movies={movies} />
       </div>
