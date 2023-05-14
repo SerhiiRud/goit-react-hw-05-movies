@@ -8,6 +8,7 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const { movieId } = useParams();
 
@@ -21,6 +22,7 @@ const Reviews = () => {
         setError(ERROR_MSG);
       } finally {
         setIsLoading(false);
+        setIsLoaded(true);
       }
     };
 
@@ -29,9 +31,9 @@ const Reviews = () => {
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
       {error && <div>{error}</div>}
-      {reviews.length === 0 ? (
+      {isLoading && <div>Loading...</div>}
+      {isLoaded && reviews.length === 0 ? (
         <p>We don't have any reviews for this movie</p>
       ) : (
         <ul>
