@@ -33,6 +33,9 @@ const Movies = () => {
         <button type="submit">Search</button>
       </Form>
       <div>
+        {movies.length === 0 && (
+          <div>We have not found such movie, please, try another query.</div>
+        )}
         <MovieGallery movies={movies} />
       </div>
     </GalleryContainer>
