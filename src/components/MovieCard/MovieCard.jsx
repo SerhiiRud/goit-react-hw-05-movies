@@ -1,6 +1,7 @@
 import { Outlet, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { prePoster } from 'services/API';
-import { MovieCardContainer } from './MovieCard.styled';
+import { MovieCardContainer, InfoList, Credits } from './MovieCard.styled';
 
 export const MovieCard = ({ movie }) => {
   const { poster_path, original_title, overview, genres } = movie;
@@ -33,16 +34,29 @@ export const MovieCard = ({ movie }) => {
           </p>
         </div>
       </MovieCardContainer>
-      <p>Additional information</p>
-      <ul>
+      <Credits>Additional information</Credits>
+      <InfoList>
         <li>
           <Link to="cast">Cast</Link>
         </li>
         <li>
           <Link to="reviews">Reviews</Link>
         </li>
-      </ul>
+      </InfoList>
       <Outlet />
     </>
   );
+};
+
+MovieCard.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    release_date: PropTypes.string.isRequired,
+    poster_path: PropTypes.string.isRequired,
+    vote_average: PropTypes.number,
+    overview: PropTypes.string,
+    genres: PropTypes.arrayOf(
+      PropTypes.shape({ name: PropTypes.string.isRequired })
+    ),
+  }).isRequired,
 };

@@ -1,10 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { GalleryList } from './MovieGallery.styled';
 
 export const MovieGallery = ({ movies }) => {
   const location = useLocation();
 
   return (
-    <ul>
+    <GalleryList>
       {movies.map(({ id, name, title }) => (
         <li key={id}>
           <Link state={{ from: location }} to={`/movies/${id}`}>
@@ -12,6 +14,8 @@ export const MovieGallery = ({ movies }) => {
           </Link>
         </li>
       ))}
-    </ul>
+    </GalleryList>
   );
 };
+
+MovieGallery.propTypes = { movies: PropTypes.array };

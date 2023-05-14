@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { fetchMovieSearch } from 'services/API';
 import { MovieGallery } from 'components/MovieGallery/MovieGallery';
+import { GalleryContainer } from './Movies.styled';
+import { Form } from './Movies.styled';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -25,15 +27,15 @@ const Movies = () => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <GalleryContainer>
+      <Form onSubmit={handleSubmit}>
         <input type="text" autoComplete="off" name="input" autoFocus />
         <button type="submit">Search</button>
-      </form>
+      </Form>
       <div>
         <MovieGallery movies={movies} />
       </div>
-    </>
+    </GalleryContainer>
   );
 };
 

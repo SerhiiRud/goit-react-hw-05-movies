@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { fetchMovieId } from 'services/API';
 import { MovieCard } from 'components/MovieCard/MovieCard';
+import { Loader } from 'components/Loader/Loader';
+import { MovieContainer, BackLink } from './MovieDetails.styled';
 
 const ERROR_MSG = 'Sorry, we have failed to show you this movie. Try again!';
 
@@ -33,16 +35,18 @@ const MovieDetails = () => {
 
   return (
     <>
-      <Link to={backLinkHref.current} state={{ from: 'MovieDetails' }}>
-        <button type="button">Go back</button>
-      </Link>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>{error}</div>}
-      {movie.title && (
-        <div>
-          <MovieCard movie={movie} />
-        </div>
-      )}
+      <BackLink to={backLinkHref.current} state={{ from: 'MovieDetails' }}>
+        <button type="button">← Go back</button>
+      </BackLink>
+      <MovieContainer>
+        {isLoading && <Loader />}
+        {error && <div>{error}</div>}
+        {movie.title && (
+          <div>
+            <MovieCard movie={movie} />
+          </div>
+        )}
+      </MovieContainer>
     </>
   );
 };

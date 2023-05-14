@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchMovieReviews } from 'services/API';
 import { useParams } from 'react-router-dom';
+import { Loader } from 'components/Loader/Loader';
+import { ReviewsList, Author } from './Reviews.styled';
 
 const ERROR_MSG = 'Error happend';
 
@@ -32,18 +34,18 @@ const Reviews = () => {
   return (
     <>
       {error && <div>{error}</div>}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Loader />}
       {isLoaded && reviews.length === 0 ? (
         <p>We don't have any reviews for this movie</p>
       ) : (
-        <ul>
+        <ReviewsList>
           {reviews.map(({ id, author, content }) => (
             <li key={id}>
-              <p>Author: {author}</p>
+              <Author>Author: {author}</Author>
               <p>{content}</p>
             </li>
           ))}
-        </ul>
+        </ReviewsList>
       )}
     </>
   );
