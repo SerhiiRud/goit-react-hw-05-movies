@@ -3,18 +3,31 @@ import { useSearchParams } from 'react-router-dom';
 import { fetchMovieSearch } from 'services/API';
 import { MovieGallery } from 'components/MovieGallery/MovieGallery';
 import { GalleryContainer } from './Movies.styled';
+import { Loader } from 'components/Loader/Loader';
 import { Form } from './Movies.styled';
+
+const ERROR_MSG = 'Error happend';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
+  const [error, setError] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const query = searchParams.get('query');
 
   useEffect(() => {
     if (!query) return;
     const fetchData = async () => {
-      const res = await fetchMovieSearch(query);
-      setMovies(res.results);
+      try {
+        const res = await fetchMovieSearch(query);
+        setMovies(res.results);
+      } catch (error) {
+        setError(ERROR_MSG);
+      } finally {
+        setIsLoading(false);
+        setIsLoaded(true);
+      }
     };
     fetchData(query);
   }, [query]);
@@ -33,7 +46,9 @@ const Movies = () => {
         <button type="submit">Search</button>
       </Form>
       <div>
-        {movies.length === 0 && (
+        {error && <div>{error}</div>}
+        {isLoading && <Loader />}
+        {isLoaded && movies.length === 0 && (
           <div>We have not found such movie, please, try another query.</div>
         )}
         <MovieGallery movies={movies} />
